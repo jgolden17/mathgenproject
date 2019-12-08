@@ -1,14 +1,33 @@
-# -*- coding: utf-8 -*-
+"""
+Defines the models for the scraped items
 
-# Define here the models for your scraped items
-#
-# See documentation in:
-# https://docs.scrapy.org/en/latest/topics/items.html
+See documentation in https://docs.scrapy.org/en/latest/topics/items.html
+"""
+from scrapy import Item, Field
 
-import scrapy
+class MathGenProjectItem(Item):
+    """
+    Represents a MathGenProjectItem
+    """
+    href = Field()
 
+class Mathematician(MathGenProjectItem):
+    """
+    Respresents a mathematician
+    """
+    id = Field()
+    name = Field()
+    university = Field()
+    dissertation = Field()
+    advisors = Field()
+    students = Field()
 
-class MathgenprojectItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+class Advisor(Mathematician):
+    """
+    Represents a mathematician's advisor
+    """
+
+class Student(Mathematician):
+    """
+    Represents a mathematician's student
+    """
