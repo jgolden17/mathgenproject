@@ -13,7 +13,7 @@ class MathGenProjectSpider(Spider):
     name = "mathgenproject"
 
     ADVISOR_XPATH = '//p[contains(.,\'Advisor\')]/a'
-    NAME_CSS = 'title::text'
+    NAME_XPATH = '//h2[@style=\'text-align: center; margin-bottom: 0.5ex; margin-top: 1ex\']/text()'
     DISSERTATION_CSS = '#thesisTitle::text'
     HREF_CSS = '::attr(href)'
 
@@ -42,12 +42,14 @@ class MathGenProjectSpider(Spider):
         Parse mathematician from response
         """
         print(response.css('title'))
-        name = response.css(self.NAME_CSS).get().split('-')[0]
+        name = response.xpath(self.NAME_XPATH).get()
+        mgp_id = parse_id(response.request.url)
         dissertation = response.css(self.DISSERTATION_CSS).get()
 
         advisors = [self.parse_advisor(x) for x in response.xpath(self.ADVISOR_XPATH)]
 
         return Mathematician(
+            id=mgp_id,
             name=clean_string(name),
             advisors=advisors,
             dissertation=clean_string(dissertation),
